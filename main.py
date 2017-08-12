@@ -13,10 +13,15 @@ def main():
                 # Next order
                 if command == 'n':
                     oh.next_order()
+                # Previous order
                 elif command == 'p':
                     oh.previous_order()
 
                 # Serving
+                elif command == "":
+                    line = input("Input foods :")
+                    oh.update_total_served(line)
+                    print(oh.count_current_orders())
 
 
     except KeyboardInterrupt:

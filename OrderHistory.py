@@ -35,6 +35,7 @@ class OrderHistory:
 
         self.current_queue_number = len(self.order_history)
         self.current_order = self.order_history[-1]
+        self.count_total_ordered()
         print(self.order_history)
 
 
@@ -48,7 +49,8 @@ class OrderHistory:
         else:
             self.current_queue_number += 1
             self.current_order = self.order_history[self.current_queue_number - 1]
-        print(self.order_history)
+        #print(self.order_history)
+        self.count_total_ordered()
 
 
     def previous_order(self):
@@ -68,18 +70,18 @@ class OrderHistory:
     #         l.close()
     #
     #
-    # def count_total_ordered(self):
-    #     food_counts = [0, 0, 0, 0]
-    #     for order in self.order_history:
-    #         x = order.return_ordered
-    #         for i in range(4):
-    #             food_counts[i] += x[i]
-    #     self.total_ordered = food_counts
+    def count_total_ordered(self):
+        food_counts = [0, 0, 0, 0]
+        for order in self.order_history:
+            for i in range(4):
+                food_counts[i] += order[i]
+        self.total_ordered = food_counts
 
 
-    def update_total_served(self, new_serving):
+    def update_total_served(self, string):
+        new_serving = string.split(' ')
         for i in range(4):
-            self.total_served[i] += new_serving[i]
+            self.total_served[i] += int(new_serving[i])
 
 
     def count_current_orders(self):
@@ -99,6 +101,8 @@ class OrderHistory:
             string += str(self.current_order[i]) + " "
         string += str(self.current_order[3])
         return string
+
+
 
 
     # def new_order(self, order_string):
