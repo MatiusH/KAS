@@ -7,12 +7,16 @@ def main():
 
     try:
         while True:
-            if self.order_mode:
-                command = input(
-                    "New order = press ENTER, new serving = SPACE + ENTER ")
-                if command == "":
-                    line = input("ORDER #" + str(oh.return_queue_number()) + " : food1 food2 food3 food4 ")
-                    #TODO tilaaminen
+            if order_mode:
+                print("ORDER #" + str(oh.return_queue_number()) + ": " + oh.return_current_order_str())
+                command = input("Next order = 'n', previous order = 'p', serve = 'RETURN':")
+                # Next order
+                if command == 'n':
+                    oh.next_order()
+                elif command == 'p':
+                    oh.previous_order()
+
+                # Serving
 
 
     except KeyboardInterrupt:

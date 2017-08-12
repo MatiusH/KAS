@@ -1,7 +1,6 @@
-from Order import *
-
 # Read previous orders from logfile and save it's contents to a list of Orders.
 # First line contains the log of served foods
+
 
 class OrderHistory:
     def __init__(self):
@@ -17,56 +16,65 @@ class OrderHistory:
 
             first_line = True
             for line in logfile_lines:
+                buf_list = line.split(' ')
                 if first_line:
                     # Total served
-                    self.total_served = line.split(' ')
+                    self.total_served = buf_list
                     # Convert to ints
                     for i in range(4):
                         self.total_served[i] = int(self.total_served[i])
                     first_line = False
                 else:
-                    # Append old orders
-                    self.order_history.append(Order(line))
+                    # Append old orders: make a list of the logfile line and remove queue number
+                    buf_list.remove(buf_list[0])
+                    # Convert string-numbers to ints
+                    for i in range(4):
+                        buf_list[i] = int(buf_list[i])
+                    self.order_history.append(buf_list)
             l.close()
 
-        self.current_queue_number = self.order_history[-1].return_queue_number
-        self.current_order = self.order_history[-1].return_ordered()
+        self.current_queue_number = len(self.order_history)
+        self.current_order = self.order_history[-1]
+        print(self.order_history)
 
 
 
     def next_order(self):
         # If new order
-        if self.current_queue_number == self.order_history[-1].return_queue_number:
-            self.order_history.append(Order(str(self.current_queue_number + 1) + 8 * " 0"))
+        if self.current_queue_number == len(self.order_history):
+            self.order_history.append([0, 0, 0, 0])
+            self.current_queue_number += 1
+            self.current_order = self.order_history[self.current_queue_number - 1]
         else:
             self.current_queue_number += 1
-            self.current_order = self.order_history[self.current_queue_number - 1].return_ordered()
+            self.current_order = self.order_history[self.current_queue_number - 1]
+        print(self.order_history)
 
 
     def previous_order(self):
         if self.current_queue_number > 1:
             self.current_queue_number -= 1
-            self.current_order = self.order_history[self.current_queue_number - 1].return_ordered()
+            self.current_order = self.order_history[self.current_queue_number - 1]
 
 
-    def update_logfile(self):
-        with open(self.logfile, 'w') as l:
-            # Rewrite the whole logfile
-            for order in self.order_history:
-                line = str(order.return_queue_number())
-                for o in order.return_ordered():
-                    line += " " + str(o)
-                l.write(line + '\n')
-            l.close()
-
-
-    def count_total_ordered(self):
-        food_counts = [0, 0, 0, 0]
-        for order in self.order_history:
-            x = order.return_ordered
-            for i in range(4):
-                food_counts[i] += x[i]
-        self.total_ordered = food_counts
+    # def update_logfile(self):
+    #     with open(self.logfile, 'w') as l:
+    #         # Rewrite the whole logfile
+    #         for order in self.order_history:
+    #             line = str(order.return_queue_number())
+    #             for o in order.return_ordered():
+    #                 line += " " + str(o)
+    #             l.write(line + '\n')
+    #         l.close()
+    #
+    #
+    # def count_total_ordered(self):
+    #     food_counts = [0, 0, 0, 0]
+    #     for order in self.order_history:
+    #         x = order.return_ordered
+    #         for i in range(4):
+    #             food_counts[i] += x[i]
+    #     self.total_ordered = food_counts
 
 
     def update_total_served(self, new_serving):
@@ -77,7 +85,7 @@ class OrderHistory:
     def count_current_orders(self):
         current_orders = [0, 0, 0, 0]
         for i in range(4):
-            current_orders[i] = self.total_ordered[i] - self.total_served[i]
+            current_orders[i] = self.total_ordered[i] - int(self.total_served[i])
         return current_orders
 
 
@@ -85,7 +93,15 @@ class OrderHistory:
         return self.current_queue_number
 
 
-    def new_order(self, order_string):
-        self.current_order........... #TODO Orderin muuttaminen mapiksi
+    def return_current_order_str(self):
+        string = ""
+        for i in range(3):
+            string += str(self.current_order[i]) + " "
+        string += str(self.current_order[3])
+        return string
+
+
+    # def new_order(self, order_string):
+    #     self.current_order........... #TODO Orderin muuttaminen mapiksi
 
 
