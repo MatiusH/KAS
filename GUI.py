@@ -9,8 +9,8 @@ class GUI(OrderHistory):
         self.order_mode = True
 
         #################
-        self.food_names = ["food1", "food2", "food3", "food4"]
-        self.food_prices = [1.0, 2.0, 3.0, 4.0]
+        self.food_names = ["Lihis", "Ranut", "Sipulit", "Mak_per"]
+        self.food_prices = [3.0, 3.0, 3.0, 5.0]
 
         self.new_serving = [0, 0, 0, 0]
 
@@ -105,6 +105,7 @@ class GUI(OrderHistory):
         self.button_submit.configure(state=DISABLED)
         self.button_previous.configure(state=NORMAL)
         self.button_next.configure(state=NORMAL)
+        self.update_food_count_labels()
 
 
     def serve(self):
@@ -126,12 +127,11 @@ class GUI(OrderHistory):
         self.button_next.configure(state=DISABLED)
 
 
-
-
-
-
     def toggle_mode(self):
-        self.order_mode ^= self.order_mode
+        if self.order_mode:
+            self.order_mode = False
+        else:
+            self.order_mode = True
 
 
     # Up- and down-button methods - gui-side ###########################################################################
@@ -242,16 +242,15 @@ class GUI(OrderHistory):
         self.label_queue_number.configure(text=str(self.return_queue_number()))
         self.update_food_count_labels()
         self.label_total.configure(text=(self.return_total_price_str()) + "€")
+        self.label_ordered.configure(text=self.count_current_orders_str())
 
 
     def next(self):
-       self.next_order()
-       self.label_queue_number.configure(text=str(self.return_queue_number()))
-       self.update_food_count_labels()
-       self.label_total.configure(text=(self.return_total_price_str()) + "€")
-
-
-
+        self.next_order()
+        self.label_queue_number.configure(text=str(self.return_queue_number()))
+        self.update_food_count_labels()
+        self.label_total.configure(text=(self.return_total_price_str()) + "€")
+        self.label_ordered.configure(text=self.count_current_orders_str())
 
 
     def exit(self):
