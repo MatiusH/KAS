@@ -36,7 +36,7 @@ class OrderHistory:
         self.current_queue_number = len(self.order_history)
         self.current_order = self.order_history[-1]
         self.count_total_ordered()
-        print(self.order_history)
+        #print(self.order_history)
 
 
 
@@ -91,6 +91,13 @@ class OrderHistory:
         return current_orders
 
 
+    def count_current_orders_str(self):
+        current_orders_str = ""
+        for i in range(4):
+            current_orders_str += " " + str(self.total_ordered[i] - int(self.total_served[i]))
+        return current_orders_str
+
+
     def return_queue_number(self):
         return self.current_queue_number
 
@@ -103,9 +110,38 @@ class OrderHistory:
         return string
 
 
+    def food_1_up(self):
+        self.current_order[0] += 1
+
+    def food_2_up(self):
+        self.current_order[1] += 1
+
+    def food_3_up(self):
+        self.current_order[2] += 1
+
+    def food_4_up(self):
+        self.current_order[3] += 1
 
 
-    # def new_order(self, order_string):
+    def food_1_down(self):
+        if self.current_order[0] > 0:
+            self.current_order[0] -= 1
+
+    def food_2_down(self):
+        if self.current_order[1] > 0:
+            self.current_order[1] -= 1
+
+    def food_3_down(self):
+        if self.current_order[2] > 0:
+            self.current_order[2] -= 1
+
+    def food_4_down(self):
+        if self.current_order[3] > 0:
+            self.current_order[3] -= 1
+
+
+
+            # def new_order(self, order_string):
     #     self.current_order........... #TODO Orderin muuttaminen mapiksi
 
 

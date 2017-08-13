@@ -1,8 +1,10 @@
 from OrderHistory import *
+from GUI import *
 
 
 def main():
-    oh = OrderHistory()
+    #oh = OrderHistory()
+    gui = GUI()
     order_mode = True
 
     try:
@@ -25,7 +27,7 @@ def main():
 
 
     except KeyboardInterrupt:
-        pass
+        gui.exit()
 
 
 if __name__ == '__main__':
