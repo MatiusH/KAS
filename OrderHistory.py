@@ -78,8 +78,7 @@ class OrderHistory:
         self.total_ordered = food_counts
 
 
-    def update_total_served(self, string):
-        new_serving = string.split(' ')
+    def submit_new_serving(self, new_serving):
         for i in range(4):
             self.total_served[i] += int(new_serving[i])
 
