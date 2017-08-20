@@ -59,17 +59,24 @@ class OrderHistory:
             self.current_order = self.order_history[self.current_queue_number - 1]
 
 
-    # def update_logfile(self):
-    #     with open(self.logfile, 'w') as l:
-    #         # Rewrite the whole logfile
-    #         for order in self.order_history:
-    #             line = str(order.return_queue_number())
-    #             for o in order.return_ordered():
-    #                 line += " " + str(o)
-    #             l.write(line + '\n')
-    #         l.close()
-    #
-    #
+    def update_logfile(self):
+        with open(self.logfile, 'w') as l:
+            # Rewrite the whole logfile
+            # First served foods
+            line = ""
+            for i in range(3):
+                line += str(self.total_served[i]) + " "
+            line += str(self.total_served[3]) + '\n'
+            l.write(line)
+            # Then all orders, including order numbers
+            for i in range(len(self.order_history)):
+                line = str(i + 1)
+                for j in range(4):
+                    line += " " + str(self.order_history[i][j])
+                l.write(line + '\n')
+            l.close()
+
+
     def count_total_ordered(self):
         food_counts = [0, 0, 0, 0]
         for order in self.order_history:
@@ -139,8 +146,5 @@ class OrderHistory:
             self.current_order[3] -= 1
 
 
-
-            # def new_order(self, order_string):
-    #     self.current_order........... #TODO Orderin muuttaminen mapiksi
 
 

@@ -8,7 +8,7 @@ class GUI(OrderHistory):
         self.main_window = Tk()
         self.order_mode = True
 
-        #################
+        ################# Muokattavat parametrit ########################
         self.food_names = ["Lihis", "Ranut", "Sipulit", "Mak_per"]
         self.food_prices = [3.0, 3.0, 3.0, 5.0]
 
@@ -247,6 +247,7 @@ class GUI(OrderHistory):
 
     def next(self):
         self.next_order()
+        self.update_logfile()
         self.label_queue_number.configure(text=str(self.return_queue_number()))
         self.update_food_count_labels()
         self.label_total.configure(text=(self.return_total_price_str()) + "€")
