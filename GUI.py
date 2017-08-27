@@ -1,10 +1,12 @@
 from tkinter import *
 from OrderHistory import *
+from Bluetooth import *
 
 
 class GUI(OrderHistory):
     def __init__(self):
         super().__init__()
+        self.bt = Bluetooth()
         self.main_window = Tk()
         self.order_mode = True
 
@@ -235,6 +237,7 @@ class GUI(OrderHistory):
         self.label_ordered.configure(text=self.count_current_orders_str())
         self.new_serving = [0, 0, 0, 0]
         self.update_food_count_labels()
+        self.bt.send_foods(self.count_current_orders())
 
 
     def previous(self):
@@ -252,6 +255,7 @@ class GUI(OrderHistory):
         self.update_food_count_labels()
         self.label_total.configure(text=(self.return_total_price_str()) + "€")
         self.label_ordered.configure(text=self.count_current_orders_str())
+        self.bt.send_foods(self.count_current_orders())
 
 
     def exit(self):
