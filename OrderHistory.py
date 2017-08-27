@@ -11,8 +11,8 @@ class OrderHistory:
             logfile_lines = [line.rstrip('\n') for line in l]
             # Create the order history list
             self.order_history = []
-            self.total_ordered = [0, 0, 0, 0]
-            self.total_served = [0, 0, 0, 0]
+            self.total_ordered = [0, 0, 0, 0, 0, 0, 0, 0]
+            self.total_served = [0, 0, 0, 0, 0, 0, 0, 0]
 
             first_line = True
             for line in logfile_lines:
@@ -21,14 +21,14 @@ class OrderHistory:
                     # Total served
                     self.total_served = buf_list
                     # Convert to ints
-                    for i in range(4):
+                    for i in range(8):
                         self.total_served[i] = int(self.total_served[i])
                     first_line = False
                 else:
                     # Append old orders: make a list of the logfile line and remove queue number
                     buf_list.remove(buf_list[0])
                     # Convert string-numbers to ints
-                    for i in range(4):
+                    for i in range(8):
                         buf_list[i] = int(buf_list[i])
                     self.order_history.append(buf_list)
             l.close()
@@ -43,7 +43,7 @@ class OrderHistory:
     def next_order(self):
         # If new order
         if self.current_queue_number == len(self.order_history):
-            self.order_history.append([0, 0, 0, 0])
+            self.order_history.append([0, 0, 0, 0, 0, 0, 0, 0])
             self.current_queue_number += 1
             self.current_order = self.order_history[self.current_queue_number - 1]
         else:
@@ -64,42 +64,42 @@ class OrderHistory:
             # Rewrite the whole logfile
             # First served foods
             line = ""
-            for i in range(3):
+            for i in range(7):
                 line += str(self.total_served[i]) + " "
-            line += str(self.total_served[3]) + '\n'
+            line += str(self.total_served[7]) + '\n'
             l.write(line)
             # Then all orders, including order numbers
             for i in range(len(self.order_history)):
                 line = str(i + 1)
-                for j in range(4):
+                for j in range(8):
                     line += " " + str(self.order_history[i][j])
                 l.write(line + '\n')
             l.close()
 
 
     def count_total_ordered(self):
-        food_counts = [0, 0, 0, 0]
+        food_counts = [0, 0, 0, 0, 0, 0, 0, 0]
         for order in self.order_history:
-            for i in range(4):
+            for i in range(8):
                 food_counts[i] += order[i]
         self.total_ordered = food_counts
 
 
     def submit_new_serving(self, new_serving):
-        for i in range(4):
+        for i in range(8):
             self.total_served[i] += int(new_serving[i])
 
 
     def count_current_orders(self):
-        current_orders = [0, 0, 0, 0]
-        for i in range(4):
+        current_orders = [0, 0, 0, 0, 0, 0, 0, 0]
+        for i in range(8):
             current_orders[i] = self.total_ordered[i] - int(self.total_served[i])
         return current_orders
 
 
     def count_current_orders_str(self):
         current_orders_str = ""
-        for i in range(4):
+        for i in range(8):
             current_orders_str += " " + str(self.total_ordered[i] - int(self.total_served[i]))
         return current_orders_str
 
@@ -110,9 +110,9 @@ class OrderHistory:
 
     def return_current_order_str(self):
         string = ""
-        for i in range(3):
+        for i in range(7):
             string += str(self.current_order[i]) + " "
-        string += str(self.current_order[3])
+        string += str(self.current_order[7])
         return string
 
 
@@ -127,6 +127,18 @@ class OrderHistory:
 
     def food_4_up(self):
         self.current_order[3] += 1
+
+    def food_5_up(self):
+        self.current_order[4] += 1
+
+    def food_6_up(self):
+        self.current_order[5] += 1
+
+    def food_7_up(self):
+        self.current_order[6] += 1
+
+    def food_8_up(self):
+        self.current_order[7] += 1
 
 
     def food_1_down(self):
@@ -144,6 +156,22 @@ class OrderHistory:
     def food_4_down(self):
         if self.current_order[3] > 0:
             self.current_order[3] -= 1
+
+    def food_5_down(self):
+        if self.current_order[4] > 0:
+            self.current_order[4] -= 1
+
+    def food_6_down(self):
+        if self.current_order[5] > 0:
+            self.current_order[5] -= 1
+
+    def food_7_down(self):
+        if self.current_order[6] > 0:
+            self.current_order[6] -= 1
+
+    def food_8_down(self):
+        if self.current_order[7] > 0:
+            self.current_order[7] -= 1
 
 
 

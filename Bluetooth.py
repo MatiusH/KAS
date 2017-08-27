@@ -37,9 +37,9 @@ class Bluetooth:
         line = ""
         for i in range(len(food_list)):
             if food_list[i] > 9:
-                line += " 9"
+                line += "9"
             else:
-                line += ' ' + str(food_list[i])
+                line += str(food_list[i])
         # Convert to nytes and sent to bluetooth module
         self.ser.write(line.encode())
         print(line)
