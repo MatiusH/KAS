@@ -116,6 +116,10 @@ class OrderHistory:
         return string
 
 
+    def return_order(self, num):
+        return self.order_history[num]
+
+
     def food_1_up(self):
         self.current_order[0] += 1
 
