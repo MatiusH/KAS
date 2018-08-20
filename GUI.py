@@ -11,15 +11,18 @@ class GUI(OrderHistory):
         self.order_mode = True
 
         ############################### Muokattavat parametrit ###############################
-        self.food_names = ["Lihis", "Ranut", "Makkaraperunat", "Sipulirenkaat", "Kinkkupizza", "Salamipizza", "foo", "foo"]
+        self.food_names = ["Lihis", "Ranut", "Makkaraperunat", "Sipulirenkaat", "Kinkkupizza", "Salamipizza",
+                           "foo", "foo"]
         self.food_prices = [3.0, 3.0, 3.0, 5.0, 1.0, 1.0, 1.0, 1.0]
         ######################################################################################
 
-        self.new_serving = [0, 0, 0, 0, 0, 0, 0, 0]
+        self.new_serving = 0
 
         # Row 0
-        self.button_order = Button(self.main_window, text="Vastaanota\ntilauksia", background="green", state=DISABLED, command=self.order, width=15)
-        self.button_serve = Button(self.main_window, text="Tarjoile ruokia", background="grey", command=self.serve, width=15, height=2)
+        self.button_order = Button(self.main_window, text="Vastaanota\ntilauksia", background="green", state=DISABLED,
+                                   command=self.order, width=15)
+        self.button_serve = Button(self.main_window, text="Tarjoile ruokia", background="grey", command=self.serve,
+                                   width=15, height=2)
         self.label_queue_number_text = Label(self.main_window, text="Vuoronumero:", width=15)
         self.label_queue_number = Label(self.main_window, text=str(self.return_queue_number()), width=15)
         self.label_ordered_foods = Label(self.main_window, text="Tilatut ruuat:", width=15)
@@ -47,63 +50,69 @@ class GUI(OrderHistory):
         self.label_food_6_text.grid(row=1, column=5)
         self.label_food_7_text.grid(row=1, column=6)
         self.label_food_8_text.grid(row=1, column=7)
+
         # Row 2
-        food_counts = self.return_current_order_str().split(' ')
-        self.label_food_1 = Label(self.main_window, text=food_counts[0])
-        self.label_food_2 = Label(self.main_window, text=food_counts[1])
-        self.label_food_3 = Label(self.main_window, text=food_counts[2])
-        self.label_food_4 = Label(self.main_window, text=food_counts[3])
-        self.label_food_5 = Label(self.main_window, text=food_counts[4])
-        self.label_food_6 = Label(self.main_window, text=food_counts[5])
-        self.label_food_7 = Label(self.main_window, text=food_counts[6])
-        self.label_food_8 = Label(self.main_window, text=food_counts[7])
-        self.label_total_text = Label(self.main_window, text="Total:")
-        self.label_total = Label(self.main_window, text=(self.return_total_price_str()) + "€")
-        self.label_food_1.grid(row=2, column=0)
-        self.label_food_2.grid(row=2, column=1)
-        self.label_food_3.grid(row=2, column=2)
-        self.label_food_4.grid(row=2, column=3)
-        self.label_food_5.grid(row=2, column=4)
-        self.label_food_6.grid(row=2, column=5)
-        self.label_food_7.grid(row=2, column=6)
-        self.label_food_8.grid(row=2, column=7)
-        self.label_total_text.grid(row=2, column=8)
-        self.label_total.grid(row=2, column=9)
+        # food_counts = self.return_current_order_str().split(' ')
+        # self.label_food_1 = Label(self.main_window, text=food_counts[0])
+        # self.label_food_2 = Label(self.main_window, text=food_counts[1])
+        # self.label_food_3 = Label(self.main_window, text=food_counts[2])
+        # self.label_food_4 = Label(self.main_window, text=food_counts[3])
+        # self.label_food_5 = Label(self.main_window, text=food_counts[4])
+        # self.label_food_6 = Label(self.main_window, text=food_counts[5])
+        # self.label_food_7 = Label(self.main_window, text=food_counts[6])
+        # self.label_food_8 = Label(self.main_window, text=food_counts[7])
+        # # self.label_total_text = Label(self.main_window, text="Total:")
+        # self.label_total = Label(self.main_window, text=(self.return_total_price_str()) + "€")
+        # self.label_food_1.grid(row=2, column=0)
+        # self.label_food_2.grid(row=2, column=1)
+        # self.label_food_3.grid(row=2, column=2)
+        # self.label_food_4.grid(row=2, column=3)
+        # self.label_food_5.grid(row=2, column=4)
+        # self.label_food_6.grid(row=2, column=5)
+        # self.label_food_7.grid(row=2, column=6)
+        # self.label_food_8.grid(row=2, column=7)
+        # self.food_count_labels = []
+        # self.food_count_labels.append(self.label_food_1)
+        # self.food_count_labels.append(self.label_food_2)
+        # self.food_count_labels.append(self.label_food_3)
+        # self.food_count_labels.append(self.label_food_4)
+        # self.food_count_labels.append(self.label_food_5)
+        # self.food_count_labels.append(self.label_food_6)
+        # self.food_count_labels.append(self.label_food_7)
+        # self.food_count_labels.append(self.label_food_8)
+
+        # self.label_total_text.grid(row=2, column=8)
+        # self.label_total.grid(row=2, column=9)
         # Row 3
-        self.button_food_1_up = Button(self.main_window, text="↑", command=self.food_1_up_gui, width=10, height=6)
-        self.button_food_2_up = Button(self.main_window, text="↑", command=self.food_2_up_gui, width=10, height=6)
-        self.button_food_3_up = Button(self.main_window, text="↑", command=self.food_3_up_gui, width=10, height=6)
-        self.button_food_4_up = Button(self.main_window, text="↑", command=self.food_4_up_gui, width=10, height=6)
-        self.button_food_5_up = Button(self.main_window, text="↑", command=self.food_5_up_gui, width=10, height=6)
-        self.button_food_6_up = Button(self.main_window, text="↑", command=self.food_6_up_gui, width=10, height=6)
-        self.button_food_7_up = Button(self.main_window, text="↑", command=self.food_7_up_gui, width=10, height=6)
-        self.button_food_8_up = Button(self.main_window, text="↑", command=self.food_8_up_gui, width=10, height=6)
-        self.button_food_1_up.grid(row=3, column=0)
-        self.button_food_2_up.grid(row=3, column=1)
-        self.button_food_3_up.grid(row=3, column=2)
-        self.button_food_4_up.grid(row=3, column=3)
-        self.button_food_5_up.grid(row=3, column=4)
-        self.button_food_6_up.grid(row=3, column=5)
-        self.button_food_7_up.grid(row=3, column=6)
-        self.button_food_8_up.grid(row=3, column=7)
+        self.button_food_1 = Button(self.main_window, text="↑", command=lambda: self.select_food(1), width=10, height=6)
+        self.button_food_2 = Button(self.main_window, text="↑", command=lambda: self.select_food(2), width=10, height=6)
+        self.button_food_3 = Button(self.main_window, text="↑", command=lambda: self.select_food(3), width=10, height=6)
+        self.button_food_4 = Button(self.main_window, text="↑", command=lambda: self.select_food(4), width=10, height=6)
+        self.button_food_5 = Button(self.main_window, text="↑", command=lambda: self.select_food(5), width=10, height=6)
+        self.button_food_6 = Button(self.main_window, text="↑", command=lambda: self.select_food(6), width=10, height=6)
+        self.button_food_7 = Button(self.main_window, text="↑", command=lambda: self.select_food(7), width=10, height=6)
+        self.button_food_8 = Button(self.main_window, text="↑", command=lambda: self.select_food(8), width=10, height=6)
+        self.button_food_1.grid(row=3, column=0)
+        self.button_food_2.grid(row=3, column=1)
+        self.button_food_3.grid(row=3, column=2)
+        self.button_food_4.grid(row=3, column=3)
+        self.button_food_5.grid(row=3, column=4)
+        self.button_food_6.grid(row=3, column=5)
+        self.button_food_7.grid(row=3, column=6)
+        self.button_food_8.grid(row=3, column=7)
+        self.food_buttons = []
+        self.food_buttons.append(self.button_food_1)
+        self.food_buttons.append(self.button_food_2)
+        self.food_buttons.append(self.button_food_3)
+        self.food_buttons.append(self.button_food_4)
+        self.food_buttons.append(self.button_food_5)
+        self.food_buttons.append(self.button_food_6)
+        self.food_buttons.append(self.button_food_7)
+        self.food_buttons.append(self.button_food_8)
+
         # Row 4
-        self.button_food_1_down = Button(self.main_window, text="↓", command=self.food_1_down_gui, width=10, height=6)
-        self.button_food_2_down = Button(self.main_window, text="↓", command=self.food_2_down_gui, width=10, height=6)
-        self.button_food_3_down = Button(self.main_window, text="↓", command=self.food_3_down_gui, width=10, height=6)
-        self.button_food_4_down = Button(self.main_window, text="↓", command=self.food_4_down_gui, width=10, height=6)
-        self.button_food_5_down = Button(self.main_window, text="↓", command=self.food_5_down_gui, width=10, height=6)
-        self.button_food_6_down = Button(self.main_window, text="↓", command=self.food_6_down_gui, width=10, height=6)
-        self.button_food_7_down = Button(self.main_window, text="↓", command=self.food_7_down_gui, width=10, height=6)
-        self.button_food_8_down = Button(self.main_window, text="↓", command=self.food_8_down_gui, width=10, height=6)
-        self.button_submit = Button(self.main_window, text="Tarjoile", state=DISABLED, command=self.submit_serving_gui, width=15)
-        self.button_food_1_down.grid(row=4, column=0)
-        self.button_food_2_down.grid(row=4, column=1)
-        self.button_food_3_down.grid(row=4, column=2)
-        self.button_food_4_down.grid(row=4, column=3)
-        self.button_food_5_down.grid(row=4, column=4)
-        self.button_food_6_down.grid(row=4, column=5)
-        self.button_food_7_down.grid(row=4, column=6)
-        self.button_food_8_down.grid(row=4, column=7)
+        self.button_submit = Button(self.main_window, text="Tarjoile", state=DISABLED, command=self.submit_serving_gui,
+                                    width=15)
         self.button_submit.grid(row=4, column=8, sticky=S)
         # Row 5
         self.label_food_1_price = Label(self.main_window, text=str(self.food_prices[0]) + "€")
@@ -124,6 +133,15 @@ class GUI(OrderHistory):
         self.label_food_6_price.grid(row=5, column=5)
         self.label_food_7_price.grid(row=5, column=6)
         self.label_food_8_price.grid(row=5, column=7)
+        self.food_price_labels = []
+        self.food_price_labels.append(self.label_food_1_price)
+        self.food_price_labels.append(self.label_food_2_price)
+        self.food_price_labels.append(self.label_food_3_price)
+        self.food_price_labels.append(self.label_food_4_price)
+        self.food_price_labels.append(self.label_food_5_price)
+        self.food_price_labels.append(self.label_food_6_price)
+        self.food_price_labels.append(self.label_food_7_price)
+        self.food_price_labels.append(self.label_food_8_price)
         self.button_previous.grid(row=5, column=8)
         self.button_next.grid(row=5, column=9)
         # Row 6
@@ -132,29 +150,15 @@ class GUI(OrderHistory):
         # Row 7
         self.label_order_history = Label(self.main_window, text="Tilaushistoria:")
         self.label_order_history.grid(row=7, column=0, sticky=W)
-        # Rows 8-
-        self.label_previous_order_10 = Label(self.main_window)
-        self.label_previous_order_9 = Label(self.main_window)
-        self.label_previous_order_8 = Label(self.main_window)
-        self.label_previous_order_7 = Label(self.main_window)
-        self.label_previous_order_6 = Label(self.main_window)
-        self.label_previous_order_5 = Label(self.main_window)
-        self.label_previous_order_4 = Label(self.main_window)
-        self.label_previous_order_3 = Label(self.main_window)
-        self.label_previous_order_2 = Label(self.main_window)
-        self.label_previous_order_1 = Label(self.main_window)
-        self.label_previous_order_10.grid(row=8, column=0)
-        self.label_previous_order_9.grid(row=9, column=0)
-        self.label_previous_order_8.grid(row=10, column=0)
-        self.label_previous_order_7.grid(row=11, column=0)
-        self.label_previous_order_6.grid(row=12, column=0)
-        self.label_previous_order_5.grid(row=13, column=0)
-        self.label_previous_order_4.grid(row=14, column=0)
-        self.label_previous_order_3.grid(row=145, column=0)
-        self.label_previous_order_2.grid(row=16, column=0)
-        self.label_previous_order_1.grid(row=17, column=0, columnspan=10, sticky=W)
-        self.update_order_history()
+        # Rows 8
+        self.order_history_field = Text(height=20)
+        self.scrollbar = Scrollbar()
+        self.order_history_field.grid(row=8, column=0, columnspan=10, sticky=E+W)
+        self.scrollbar.grid(row=8, column=10, sticky=N+S)
+        self.scrollbar.configure(command=self.order_history_field.yview)
+        self.order_history_field.configure(yscrollcommand=self.scrollbar.set)
 
+        self.update_order_history_field()
         self.main_window.mainloop()
 
 
@@ -165,16 +169,10 @@ class GUI(OrderHistory):
         self.toggle_mode()
         self.label_queue_number_text.configure(text="Number:")
         self.label_queue_number.configure(text=str(self.return_queue_number()))
-        self.label_total_text.configure(text="Total:")
-        self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        self.label_food_1_price.configure(text=str(self.food_prices[0]) + "€")
-        self.label_food_2_price.configure(text=str(self.food_prices[1]) + "€")
-        self.label_food_3_price.configure(text=str(self.food_prices[2]) + "€")
-        self.label_food_4_price.configure(text=str(self.food_prices[3]) + "€")
-        self.label_food_5_price.configure(text=str(self.food_prices[4]) + "€")
-        self.label_food_6_price.configure(text=str(self.food_prices[5]) + "€")
-        self.label_food_7_price.configure(text=str(self.food_prices[6]) + "€")
-        self.label_food_8_price.configure(text=str(self.food_prices[7]) + "€")
+        # self.label_total_text.configure(text="Total:")
+        # self.label_total.configure(text=(self.return_total_price_str()) + "€")
+        for i in range(8):
+            self.food_price_labels.configure(text=str(self.food_prices[0]) + "€")
         self.button_submit.configure(state=DISABLED)
         self.button_previous.configure(state=NORMAL)
         self.button_next.configure(state=NORMAL)
@@ -185,12 +183,12 @@ class GUI(OrderHistory):
         self.button_order.configure(state=NORMAL, background="grey")
         self.button_serve.configure(state=DISABLED, background="red")
         self.toggle_mode()
-        self.new_serving = [0, 0, 0, 0, 0, 0, 0, 0]
-        self.update_food_count_labels()
+        self.new_serving = 0
+        self.update_food_count_labels(0)
         self.label_queue_number_text.configure(text="")
         self.label_queue_number.configure(text="")
-        self.label_total_text.configure(text="")
-        self.label_total.configure(text="")
+        # self.label_total_text.configure(text="")
+        # self.label_total.configure(text="")
         self.label_food_1_price.configure(text="")
         self.label_food_2_price.configure(text="")
         self.label_food_3_price.configure(text="")
@@ -211,218 +209,88 @@ class GUI(OrderHistory):
             self.order_mode = True
 
 
-    # Up- and down-button methods - gui-side ###########################################################################
-    def food_1_up_gui(self):
+    def select_food(self, food_num):
+        # Enable all buttons
+        for i in range(8):
+            self.food_buttons[i].configure(state=NORMAL)
+        # Disable current food button
+        self.food_buttons[food_num - 1].configure(state=DISABLED)
         if self.order_mode:
-            self.food_1_up()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[0] += 1
-            self.update_food_count_labels()
+            # self.update_food_count_labels(food_num)
+            # self.label_total.configure(text=(str(self.food_prices[food_num])) + "€")
+            self.order_history[self.return_queue_number()].food = food_num
+        # else:
+        #     self.new_serving[food_num] += 1
+            # self.update_food_count_labels()
 
 
-    def food_2_up_gui(self):
-        if self.order_mode:
-            self.food_2_up()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[1] += 1
-            self.update_food_count_labels()
 
-    def food_3_up_gui(self):
-        if self.order_mode:
-            self.food_3_up()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[2] += 1
-            self.update_food_count_labels()
-
-    def food_4_up_gui(self):
-        if self.order_mode:
-            self.food_4_up()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[3] += 1
-            self.update_food_count_labels()
-
-    def food_5_up_gui(self):
-        if self.order_mode:
-            self.food_5_up()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[4] += 1
-            self.update_food_count_labels()
-
-    def food_6_up_gui(self):
-        if self.order_mode:
-            self.food_6_up()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[5] += 1
-            self.update_food_count_labels()
-
-    def food_7_up_gui(self):
-        if self.order_mode:
-            self.food_7_up()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[6] += 1
-            self.update_food_count_labels()
-
-    def food_8_up_gui(self):
-        if self.order_mode:
-            self.food_8_up()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[7] += 1
-            self.update_food_count_labels()
-
-#############
-
-    def food_1_down_gui(self):
-        if self.order_mode:
-            self.food_1_down()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[0] -= 1
-            self.update_food_count_labels()
-
-    def food_2_down_gui(self):
-        if self.order_mode:
-            self.food_2_down()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[1] -= 1
-            self.update_food_count_labels()
-
-    def food_3_down_gui(self):
-        if self.order_mode:
-            self.food_3_down()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[2] -= 1
-            self.update_food_count_labels()
-
-    def food_4_down_gui(self):
-        if self.order_mode:
-            self.food_4_down()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[3] -= 1
-            self.update_food_count_labels()
-
-    def food_5_down_gui(self):
-        if self.order_mode:
-            self.food_5_down()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[4] -= 1
-            self.update_food_count_labels()
-
-    def food_6_down_gui(self):
-        if self.order_mode:
-            self.food_6_down()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[5] -= 1
-            self.update_food_count_labels()
-
-    def food_7_down_gui(self):
-        if self.order_mode:
-            self.food_7_down()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[6] -= 1
-            self.update_food_count_labels()
-
-    def food_8_down_gui(self):
-        if self.order_mode:
-            self.food_8_down()
-            self.update_food_count_labels()
-            self.label_total.configure(text=(self.return_total_price_str()) + "€")
-        else:
-            self.new_serving[7] -= 1
-            self.update_food_count_labels()
 ########################################################################################################################
 
     def return_total_price_str(self):
-        price = 0
-        for i in range(8):
-            price += self.current_order[i] * self.food_prices[i]
-        return str(price)
+        return str(self.current_order)
 
 
-    def update_food_count_labels(self):
-        if self.order_mode:
-            food_counts = self.return_current_order_str().split(' ')
-            self.label_food_1.configure(text=food_counts[0])
-            self.label_food_2.configure(text=food_counts[1])
-            self.label_food_3.configure(text=food_counts[2])
-            self.label_food_4.configure(text=food_counts[3])
-            self.label_food_5.configure(text=food_counts[4])
-            self.label_food_6.configure(text=food_counts[5])
-            self.label_food_7.configure(text=food_counts[6])
-            self.label_food_8.configure(text=food_counts[7])
-        else:
-            self.label_food_1.configure(text=self.new_serving[0])
-            self.label_food_2.configure(text=self.new_serving[1])
-            self.label_food_3.configure(text=self.new_serving[2])
-            self.label_food_4.configure(text=self.new_serving[3])
-            self.label_food_5.configure(text=self.new_serving[4])
-            self.label_food_6.configure(text=self.new_serving[5])
-            self.label_food_7.configure(text=self.new_serving[6])
-            self.label_food_8.configure(text=self.new_serving[7])
+    # def update_food_count_labels(self, food_num):
+    #     if self.order_mode:
+    #         for i in range(8):
+    #             self.food_count_labels[i].configure(text="")
+    #     else:
+    #         for i in range(8):
+    #             self.food_count_labels[i].configure(text=self.new_serving[food_num])
 
 
     def submit_serving_gui(self):
         self.submit_new_serving(self.new_serving)
         self.label_ordered.configure(text=self.count_current_orders_str())
         self.new_serving = [0, 0, 0, 0, 0, 0, 0, 0]
-        self.update_food_count_labels()
+        # self.update_food_count_labels()
         self.bt.send_foods(self.count_current_orders())
 
 
     def previous(self):
         self.previous_order()
+        self.update_logfile()
         self.label_queue_number.configure(text=str(self.return_queue_number()))
-        self.update_food_count_labels()
-        self.label_total.configure(text=(self.return_total_price_str()) + "€")
         self.label_ordered.configure(text=self.count_current_orders_str())
-        self.update_order_history()
+        self.update_order_history_field()
+        # Enable all buttons
+        for button in self.food_buttons:
+            button.configure(state=NORMAL)
+        self.food_buttons[self.order_history[self.return_queue_number()].food - 1].configure(state=DISABLED)
 
 
     def next(self):
         self.next_order()
         self.update_logfile()
         self.label_queue_number.configure(text=str(self.return_queue_number()))
-        self.update_food_count_labels()
-        self.label_total.configure(text=(self.return_total_price_str()) + "€")
         self.label_ordered.configure(text=self.count_current_orders_str())
-        self.bt.send_foods(self.count_current_orders())
-        self.update_order_history()
+        # self.bt.send_foods(self.count_current_orders())
+        self.update_order_history_field()
+        # Enable all buttons
+        for button in self.food_buttons:
+            button.configure(state=NORMAL)
+        # Disable button of ordered food
+        food_num = self.order_history[self.return_queue_number()].food
+        if food_num >= 0:
+            self.food_buttons[food_num].configure(state=DISABLED)
 
 
-    def update_order_history(self):
-        buf = self.return_order(self.current_queue_number - 1)
-        text = str(self.current_queue_number) + "                "
-        for i in range(8):
-            text += str(buf[i]) + "                               "
-        self.label_previous_order_1.configure(text=text)
+    def update_order_history_field(self):
+        text = ""
+        for order in self.order_history:
+            served = "F"
+            if order.served:
+                served = "T"
+            text += str(order.number) + " " + str(order.food) + " " + served + '\n'
+        self.order_history_field.delete(1.0, END)
+        self.order_history_field.insert(INSERT, text)
+
+        # buf = self.return_order(self.current_queue_number - 1)
+        # text = str(self.current_queue_number) + "                "
+        # for i in range(8):
+        #     text += str(buf[i]) + "                               "
+        # # self.label_previous_order_1.configure(text=text)
 
 
     def exit(self):
