@@ -1,9 +1,8 @@
-from OrderHistory import *
 from GUI import *
 
 
 def main():
-    gui = GUI()
+    GUI()
 
 
 if __name__ == '__main__':
