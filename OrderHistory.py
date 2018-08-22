@@ -2,6 +2,7 @@
 # First line contains the log of served foods
 
 from Order import *
+import time
 
 
 class OrderHistory:
@@ -25,8 +26,12 @@ class OrderHistory:
                 served = False
                 if buf_list[2] == 'T':
                     served = True
+                order_time = buf_list[3]
+                serving_time = ""
+                if served:
+                    serving_time = buf_list[4]
                 # Add new order to order history based on the logfile line
-                self.order_history.append(Order(number, food_num, served))
+                self.order_history.append(Order(number, food_num, served, order_time, serving_time))
             l.close()
 
         self.current_queue_number = self.order_history[-1].number
@@ -41,12 +46,11 @@ class OrderHistory:
         # If new order
         if self.current_queue_number == self.order_history[-1].number:
             self.current_queue_number += 1
-            self.order_history.append(Order(self.current_queue_number, 0, False))
+            self.order_history.append(Order(self.current_queue_number, 0, False, time.strftime('%X'), ""))
             self.current_order = self.order_history[self.current_queue_number]
         else:
             self.current_queue_number += 1
             self.current_order = self.order_history[self.current_queue_number]
-        # print(self.order_history)
         self.count_total_ordered()
 
 
@@ -70,7 +74,10 @@ class OrderHistory:
                 served = "F"
                 if order.served:
                     served = "T"
-                line = str(order.number) + " " + str(order.food) + " " + served + '\n'
+                order_time = order.order_time
+                serving_time = order.serving_time
+                line = str(order.number) + " " + str(order.food) + " " + served + " " + order_time + " " + serving_time\
+                                                                                                            + '\n'
                 # for j in range(8):
                 #     line += " " + str(self.order_history[i][j])
                 l.write(line)
@@ -134,65 +141,3 @@ class OrderHistory:
 
     def return_order(self, num):
         return self.order_history[num]
-
-
-    # def food_1_up(self):
-    #     self.current_order = 1
-    #
-    # def food_2_up(self):
-    #     self.current_order = 2
-    #
-    # def food_3_up(self):
-    #     self.current_order = 2
-    #
-    # def food_4_up(self):
-    #     self.current_order[3] += 1
-    #
-    # def food_5_up(self):
-    #     self.current_order[4] += 1
-    #
-    # def food_6_up(self):
-    #     self.current_order[5] += 1
-    #
-    # def food_7_up(self):
-    #     self.current_order[6] += 1
-    #
-    # def food_8_up(self):
-    #     self.current_order[7] += 1
-    #
-    #
-    # def food_1_down(self):
-    #     if self.current_order[0] > 0:
-    #         self.current_order[0] -= 1
-    #
-    # def food_2_down(self):
-    #     if self.current_order[1] > 0:
-    #         self.current_order[1] -= 1
-    #
-    # def food_3_down(self):
-    #     if self.current_order[2] > 0:
-    #         self.current_order[2] -= 1
-    #
-    # def food_4_down(self):
-    #     if self.current_order[3] > 0:
-    #         self.current_order[3] -= 1
-    #
-    # def food_5_down(self):
-    #     if self.current_order[4] > 0:
-    #         self.current_order[4] -= 1
-    #
-    # def food_6_down(self):
-    #     if self.current_order[5] > 0:
-    #         self.current_order[5] -= 1
-    #
-    # def food_7_down(self):
-    #     if self.current_order[6] > 0:
-    #         self.current_order[6] -= 1
-    #
-    # def food_8_down(self):
-    #     if self.current_order[7] > 0:
-    #         self.current_order[7] -= 1
-    #
-    #
-    #
-    #

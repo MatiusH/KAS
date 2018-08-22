@@ -9,13 +9,9 @@ class GUI(OrderHistory):
         # self.bt = Bluetooth()
         self.main_window = Tk()
         self.order_mode = True
-
-        ############################### Muokattavat parametrit ###############################
         self.food_names = ["Lihis", "Ranut", "Makkaraperunat", "Sipulirenkaat", "Kinkkupizza", "Salamipizza",
                            "Mozzarellapizza", "Makkaramakkarat"]
-        self.food_prices = [3.0, 3.0, 3.0, 5.0, 1.0, 1.0, 1.0, 1.0]
-        ######################################################################################
-
+        self.food_prices = [3.0, 2.0, 3.0, 2.0, 1.0, 1.0, 1.0, 5.0]
         self.new_serving = 0
 
         # Row 0
@@ -24,13 +20,13 @@ class GUI(OrderHistory):
         self.button_serve = Button(self.main_window, text="Tarjoile ruokia", background="grey", command=self.serve,
                                    width=15, height=2)
         self.label_queue_number_text = Label(self.main_window, text="Vuoronumero:", width=15)
-        self.label_queue_number = Label(self.main_window, text=str(self.return_queue_number()), width=15)
+        self.label_queue_number = Label(self.main_window, text=str(self.return_queue_number()), width=10, font=("", 12))
         self.label_ordered_foods = Label(self.main_window, text="Tilatut ruuat:", width=15)
         self.label_ordered = Label(self.main_window, text=self.count_current_orders_str(), width=15)
         self.button_order.grid(row=0, column=0)
         self.button_serve.grid(row=0, column=1)
         self.label_queue_number_text.grid(row=0, column=2)
-        self.label_queue_number.grid(row=0, column=3)
+        self.label_queue_number.grid(row=0, column=3, sticky=W)
         self.label_ordered_foods.grid(row=0, column=8)
         self.label_ordered.grid(row=0, column=9)
         self.label_order_history = Label(self.main_window, text="Tilaushistoria:")
@@ -39,7 +35,7 @@ class GUI(OrderHistory):
         # Row 1
         self.label_spacer_1 = Label(self.main_window, text=" ")
         self.label_spacer_1.grid(row=1, column=0)
-        self.order_history_field = Text(height=30, width=20)
+        self.order_history_field = Text(height=30, width=30)
         self.scrollbar = Scrollbar()
         self.order_history_field.grid(row=1, column=10, rowspan=10, sticky=N + S)
         self.scrollbar.grid(row=1, column=11, rowspan=10, sticky=N + S)
@@ -47,10 +43,10 @@ class GUI(OrderHistory):
         self.order_history_field.configure(yscrollcommand=self.scrollbar.set)
 
         # Row 2
-        self.entry_food_1_text = Entry(self.main_window, width=13, justify=CENTER)
-        self.entry_food_2_text = Entry(self.main_window, width=13, justify=CENTER)
-        self.entry_food_3_text = Entry(self.main_window, width=13, justify=CENTER)
-        self.entry_food_4_text = Entry(self.main_window, width=13, justify=CENTER)
+        self.entry_food_1_text = Entry(self.main_window, width=16, justify=CENTER)
+        self.entry_food_2_text = Entry(self.main_window, width=16, justify=CENTER)
+        self.entry_food_3_text = Entry(self.main_window, width=16, justify=CENTER)
+        self.entry_food_4_text = Entry(self.main_window, width=16, justify=CENTER)
         self.entry_food_1_text.insert(0, self.food_names[0])
         self.entry_food_2_text.insert(0, self.food_names[1])
         self.entry_food_3_text.insert(0, self.food_names[2])
@@ -66,10 +62,10 @@ class GUI(OrderHistory):
         self.food_text_entrys.append(self.entry_food_4_text)
 
         # Row 3
-        self.button_food_1 = Button(self.main_window, text="↑", command=lambda: self.select_food(1), width=10, height=6)
-        self.button_food_2 = Button(self.main_window, text="↑", command=lambda: self.select_food(2), width=10, height=6)
-        self.button_food_3 = Button(self.main_window, text="↑", command=lambda: self.select_food(3), width=10, height=6)
-        self.button_food_4 = Button(self.main_window, text="↑", command=lambda: self.select_food(4), width=10, height=6)
+        self.button_food_1 = Button(self.main_window, text="↑", command=lambda: self.select_food(1), width=2, height=1, font=("", 40))
+        self.button_food_2 = Button(self.main_window, text="↑", command=lambda: self.select_food(2), width=2, height=1, font=("", 40))
+        self.button_food_3 = Button(self.main_window, text="↑", command=lambda: self.select_food(3), width=2, height=1, font=("", 40))
+        self.button_food_4 = Button(self.main_window, text="↑", command=lambda: self.select_food(4), width=2, height=1, font=("", 40))
         self.button_food_1.grid(row=3, column=0)
         self.button_food_2.grid(row=3, column=1)
         self.button_food_3.grid(row=3, column=2)
@@ -120,10 +116,10 @@ class GUI(OrderHistory):
         self.label_spacer_2.grid(row=6, column=0)
 
         # Row 7
-        self.entry_food_5_text = Entry(self.main_window, width=13, justify=CENTER)
-        self.entry_food_6_text = Entry(self.main_window, width=13, justify=CENTER)
-        self.entry_food_7_text = Entry(self.main_window, width=13, justify=CENTER)
-        self.entry_food_8_text = Entry(self.main_window, width=13, justify=CENTER)
+        self.entry_food_5_text = Entry(self.main_window, width=16, justify=CENTER)
+        self.entry_food_6_text = Entry(self.main_window, width=16, justify=CENTER)
+        self.entry_food_7_text = Entry(self.main_window, width=16, justify=CENTER)
+        self.entry_food_8_text = Entry(self.main_window, width=16, justify=CENTER)
         self.entry_food_5_text.insert(0, self.food_names[4])
         self.entry_food_6_text.insert(0, self.food_names[5])
         self.entry_food_7_text.insert(0, self.food_names[6])
@@ -138,10 +134,10 @@ class GUI(OrderHistory):
         self.food_text_entrys.append(self.entry_food_8_text)
 
         # Rows 8
-        self.button_food_5 = Button(self.main_window, text="↑", command=lambda: self.select_food(5), width=10, height=6)
-        self.button_food_6 = Button(self.main_window, text="↑", command=lambda: self.select_food(6), width=10, height=6)
-        self.button_food_7 = Button(self.main_window, text="↑", command=lambda: self.select_food(7), width=10, height=6)
-        self.button_food_8 = Button(self.main_window, text="↑", command=lambda: self.select_food(8), width=10, height=6)
+        self.button_food_5 = Button(self.main_window, text="↑", command=lambda: self.select_food(5), width=2, height=1, font=("", 40))
+        self.button_food_6 = Button(self.main_window, text="↑", command=lambda: self.select_food(6), width=2, height=1, font=("", 40))
+        self.button_food_7 = Button(self.main_window, text="↑", command=lambda: self.select_food(7), width=2, height=1, font=("", 40))
+        self.button_food_8 = Button(self.main_window, text="↑", command=lambda: self.select_food(8), width=2, height=1, font=("", 40))
         self.button_food_5.grid(row=8, column=0)
         self.button_food_6.grid(row=8, column=1)
         self.button_food_7.grid(row=8, column=2)
@@ -261,6 +257,7 @@ class GUI(OrderHistory):
         if order_num == 0:
             return
         self.popup(order_num)
+        self.order_history[order_num].serving_time = time.strftime('%X')
         self.submit_new_serving(self.new_serving)
         self.label_ordered.configure(text=self.count_current_orders_str())
         self.new_serving = 0
@@ -314,9 +311,17 @@ class GUI(OrderHistory):
             served = "F"
             if order.served:
                 served = "T"
-            text += str(order.number) + " " + str(order.food) + " " + served + '\n'
+            order_time = order.order_time
+            serving_time = order.serving_time
+            text += str(order.number) + "  " + str(order.food) + "  " + served + "  " + order_time + "  "\
+                                                                                                + serving_time + '\n'
+        # Clear text field
         self.order_history_field.delete(1.0, END)
+        # Insert text
         self.order_history_field.insert(INSERT, text)
+        # Remove first row
+        self.order_history_field.delete(1.0, 2.0)
+        # Scroll to the end
         self.order_history_field.see(END)
 
 
