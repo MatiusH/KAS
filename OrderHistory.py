@@ -95,8 +95,15 @@ class OrderHistory:
 
 
     def submit_new_serving(self, new_serving):
-        for i in range(8):
-            self.total_served[i] += int(new_serving[i])
+        self.total_served[new_serving - 1] += 1
+
+
+    def find_serving_number(self, food_num):
+        for order in self.order_history:
+            if (order.food == food_num) & (order.served is False):
+                order.served = True
+                return order.number
+        return 0
 
 
     def count_current_orders(self):

@@ -172,11 +172,13 @@ class GUI(OrderHistory):
         # self.label_total_text.configure(text="Total:")
         # self.label_total.configure(text=(self.return_total_price_str()) + "€")
         for i in range(8):
-            self.food_price_labels.configure(text=str(self.food_prices[0]) + "€")
+            self.food_price_labels[i].configure(text=str(self.food_prices[i]) + "€")
         self.button_submit.configure(state=DISABLED)
         self.button_previous.configure(state=NORMAL)
         self.button_next.configure(state=NORMAL)
-        self.update_food_count_labels()
+        # self.update_food_count_labels()
+        self.update_logfile()
+        self.update_order_history_field()
 
 
     def serve(self):
@@ -184,25 +186,23 @@ class GUI(OrderHistory):
         self.button_serve.configure(state=DISABLED, background="red")
         self.toggle_mode()
         self.new_serving = 0
-        self.update_food_count_labels(0)
+        # self.update_food_count_labels(0)
         self.label_queue_number_text.configure(text="")
         self.label_queue_number.configure(text="")
         # self.label_total_text.configure(text="")
         # self.label_total.configure(text="")
-        self.label_food_1_price.configure(text="")
-        self.label_food_2_price.configure(text="")
-        self.label_food_3_price.configure(text="")
-        self.label_food_4_price.configure(text="")
-        self.label_food_5_price.configure(text="")
-        self.label_food_6_price.configure(text="")
-        self.label_food_7_price.configure(text="")
-        self.label_food_8_price.configure(text="")
+        for label in self.food_price_labels:
+            label.configure(text="")
         self.button_submit.configure(state=NORMAL)
         self.button_previous.configure(state=DISABLED)
         self.button_next.configure(state=DISABLED)
+        self.update_logfile()
+        self.update_order_history_field()
 
 
     def toggle_mode(self):
+        for button in self.food_buttons:
+            button.configure(state=NORMAL)
         if self.order_mode:
             self.order_mode = False
         else:
@@ -219,8 +219,8 @@ class GUI(OrderHistory):
             # self.update_food_count_labels(food_num)
             # self.label_total.configure(text=(str(self.food_prices[food_num])) + "€")
             self.order_history[self.return_queue_number()].food = food_num
-        # else:
-        #     self.new_serving[food_num] += 1
+        else:
+            self.new_serving = food_num
             # self.update_food_count_labels()
 
 
@@ -241,11 +241,29 @@ class GUI(OrderHistory):
 
 
     def submit_serving_gui(self):
+        order_num = self.find_serving_number(self.new_serving)
+        # If no servable order (should not happen)
+        if order_num == 0:
+            return
+        self.popup(order_num)
         self.submit_new_serving(self.new_serving)
         self.label_ordered.configure(text=self.count_current_orders_str())
-        self.new_serving = [0, 0, 0, 0, 0, 0, 0, 0]
+        self.new_serving = 0
+        self.update_order_history_field()
+        for button in self.food_buttons:
+            button.configure(state=NORMAL)
+        self.update_logfile()
         # self.update_food_count_labels()
-        self.bt.send_foods(self.count_current_orders())
+        # self.bt.send_foods(self.count_current_orders())
+
+
+    def popup(self, order_num):
+        popup = Toplevel()
+        popup.title("!")
+        message = Message(popup, text=str(order_num), font=("", 30))
+        message.pack()
+        button = Button(popup, text="Ok", command=popup.destroy)
+        button.pack()
 
 
     def previous(self):
@@ -285,6 +303,7 @@ class GUI(OrderHistory):
             text += str(order.number) + " " + str(order.food) + " " + served + '\n'
         self.order_history_field.delete(1.0, END)
         self.order_history_field.insert(INSERT, text)
+        self.order_history_field.see(END)
 
         # buf = self.return_order(self.current_queue_number - 1)
         # text = str(self.current_queue_number) + "                "
