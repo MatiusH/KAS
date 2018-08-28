@@ -6,11 +6,11 @@ from Bluetooth import *
 class GUI(OrderHistory):
     def __init__(self):
         super().__init__()
-        # self.bt = Bluetooth()
+        self.bt = Bluetooth()
         self.main_window = Tk()
         self.order_mode = True
         self.food_names = ["Lihis", "Ranut", "Makkaraperunat", "Sipulirenkaat", "Kinkkupizza", "Salamipizza",
-                           "Mozzarellapizza", "Makkaramakkarat"]
+                           "Mozzarellapizza", "Mozzarellatikut"]
         self.food_prices = [3.0, 2.0, 3.0, 2.0, 1.0, 1.0, 1.0, 5.0]
         self.new_serving = 0
 
@@ -35,7 +35,7 @@ class GUI(OrderHistory):
         # Row 1
         self.label_spacer_1 = Label(self.main_window, text=" ")
         self.label_spacer_1.grid(row=1, column=0)
-        self.order_history_field = Text(height=30, width=30)
+        self.order_history_field = Text(height=30, width=45)
         self.scrollbar = Scrollbar()
         self.order_history_field.grid(row=1, column=10, rowspan=10, sticky=N + S)
         self.scrollbar.grid(row=1, column=11, rowspan=10, sticky=N + S)
@@ -43,23 +43,19 @@ class GUI(OrderHistory):
         self.order_history_field.configure(yscrollcommand=self.scrollbar.set)
 
         # Row 2
-        self.entry_food_1_text = Entry(self.main_window, width=16, justify=CENTER)
-        self.entry_food_2_text = Entry(self.main_window, width=16, justify=CENTER)
-        self.entry_food_3_text = Entry(self.main_window, width=16, justify=CENTER)
-        self.entry_food_4_text = Entry(self.main_window, width=16, justify=CENTER)
-        self.entry_food_1_text.insert(0, self.food_names[0])
-        self.entry_food_2_text.insert(0, self.food_names[1])
-        self.entry_food_3_text.insert(0, self.food_names[2])
-        self.entry_food_4_text.insert(0, self.food_names[3])
-        self.entry_food_1_text.grid(row=2, column=0)
-        self.entry_food_2_text.grid(row=2, column=1)
-        self.entry_food_3_text.grid(row=2, column=2)
-        self.entry_food_4_text.grid(row=2, column=3)
+        self.label_food_1_text = Label(self.main_window, text=self.food_names[0], width=15)
+        self.label_food_2_text = Label(self.main_window, text=self.food_names[1], width=15)
+        self.label_food_3_text = Label(self.main_window, text=self.food_names[2], width=15)
+        self.label_food_4_text = Label(self.main_window, text=self.food_names[3], width=15)
+        self.label_food_1_text.grid(row=1, column=0)
+        self.label_food_2_text.grid(row=1, column=1)
+        self.label_food_3_text.grid(row=1, column=2)
+        self.label_food_4_text.grid(row=1, column=3)
         self.food_text_entrys = []
-        self.food_text_entrys.append(self.entry_food_1_text)
-        self.food_text_entrys.append(self.entry_food_2_text)
-        self.food_text_entrys.append(self.entry_food_3_text)
-        self.food_text_entrys.append(self.entry_food_4_text)
+        self.food_text_entrys.append(self.label_food_1_text)
+        self.food_text_entrys.append(self.label_food_2_text)
+        self.food_text_entrys.append(self.label_food_3_text)
+        self.food_text_entrys.append(self.label_food_4_text)
 
         # Row 3
         self.button_food_1 = Button(self.main_window, text="↑", command=lambda: self.select_food(1), width=2, height=1, font=("", 40))
@@ -116,22 +112,18 @@ class GUI(OrderHistory):
         self.label_spacer_2.grid(row=6, column=0)
 
         # Row 7
-        self.entry_food_5_text = Entry(self.main_window, width=16, justify=CENTER)
-        self.entry_food_6_text = Entry(self.main_window, width=16, justify=CENTER)
-        self.entry_food_7_text = Entry(self.main_window, width=16, justify=CENTER)
-        self.entry_food_8_text = Entry(self.main_window, width=16, justify=CENTER)
-        self.entry_food_5_text.insert(0, self.food_names[4])
-        self.entry_food_6_text.insert(0, self.food_names[5])
-        self.entry_food_7_text.insert(0, self.food_names[6])
-        self.entry_food_8_text.insert(0, self.food_names[7])
-        self.entry_food_5_text.grid(row=7, column=0)
-        self.entry_food_6_text.grid(row=7, column=1)
-        self.entry_food_7_text.grid(row=7, column=2)
-        self.entry_food_8_text.grid(row=7, column=3)
-        self.food_text_entrys.append(self.entry_food_5_text)
-        self.food_text_entrys.append(self.entry_food_6_text)
-        self.food_text_entrys.append(self.entry_food_7_text)
-        self.food_text_entrys.append(self.entry_food_8_text)
+        self.label_food_5_text = Label(self.main_window, text=self.food_names[4], width=15)
+        self.label_food_6_text = Label(self.main_window, text=self.food_names[5], width=15)
+        self.label_food_7_text = Label(self.main_window, text=self.food_names[6], width=15)
+        self.label_food_8_text = Label(self.main_window, text=self.food_names[7], width=15)
+        self.label_food_5_text.grid(row=7, column=0)
+        self.label_food_6_text.grid(row=7, column=1)
+        self.label_food_7_text.grid(row=7, column=2)
+        self.label_food_8_text.grid(row=7, column=3)
+        self.food_text_entrys.append(self.label_food_5_text)
+        self.food_text_entrys.append(self.label_food_6_text)
+        self.food_text_entrys.append(self.label_food_7_text)
+        self.food_text_entrys.append(self.label_food_8_text)
 
         # Rows 8
         self.button_food_5 = Button(self.main_window, text="↑", command=lambda: self.select_food(5), width=2, height=1, font=("", 40))
@@ -240,6 +232,7 @@ class GUI(OrderHistory):
         self.food_buttons[food_num - 1].configure(state=DISABLED)
         if self.order_mode:
             self.order_history[self.return_queue_number()].food = food_num
+            self.order_history[self.return_queue_number()].food_name = self.food_names[food_num - 1]
         else:
             self.new_serving = food_num
 
@@ -265,7 +258,7 @@ class GUI(OrderHistory):
         for button in self.food_buttons:
             button.configure(state=NORMAL)
         self.update_logfile()
-        # self.bt.send_foods(self.count_current_orders())
+        self.bt.send_foods(self.count_current_orders())
 
 
     def popup(self, order_num):
@@ -294,14 +287,14 @@ class GUI(OrderHistory):
         self.update_logfile()
         self.label_queue_number.configure(text=str(self.return_queue_number()))
         self.label_ordered.configure(text=self.count_current_orders_str())
-        # self.bt.send_foods(self.count_current_orders())
+        self.bt.send_foods(self.count_current_orders())
         self.update_order_history_field()
         # Enable all buttons
         for button in self.food_buttons:
             button.configure(state=NORMAL)
         # Disable button of ordered food
         food_num = self.order_history[self.return_queue_number()].food
-        if food_num >= 0:
+        if food_num > 0:
             self.food_buttons[food_num].configure(state=DISABLED)
 
 
@@ -311,10 +304,13 @@ class GUI(OrderHistory):
             served = "F"
             if order.served:
                 served = "T"
+            food_name = order.food_name
             order_time = order.order_time
             serving_time = order.serving_time
-            text += str(order.number) + "  " + str(order.food) + "  " + served + "  " + order_time + "  "\
-                                                                                                + serving_time + '\n'
+            if serving_time == "":
+                serving_time = "        "
+            text += str(order.number) + "  " + str(order.food) + "  " + served + "  " + order_time + \
+                    "  " + serving_time + "  " + food_name +'\n'
         # Clear text field
         self.order_history_field.delete(1.0, END)
         # Insert text

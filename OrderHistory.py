@@ -26,12 +26,13 @@ class OrderHistory:
                 served = False
                 if buf_list[2] == 'T':
                     served = True
-                order_time = buf_list[3]
+                food_name = buf_list[3]
+                order_time = buf_list[4]
                 serving_time = ""
                 if served:
-                    serving_time = buf_list[4]
+                    serving_time = buf_list[5]
                 # Add new order to order history based on the logfile line
-                self.order_history.append(Order(number, food_num, served, order_time, serving_time))
+                self.order_history.append(Order(number, food_num, served, food_name, order_time, serving_time))
             l.close()
 
         self.current_queue_number = self.order_history[-1].number
@@ -46,7 +47,7 @@ class OrderHistory:
         # If new order
         if self.current_queue_number == self.order_history[-1].number:
             self.current_queue_number += 1
-            self.order_history.append(Order(self.current_queue_number, 0, False, time.strftime('%X'), ""))
+            self.order_history.append(Order(self.current_queue_number, 0, False, "", time.strftime('%X'), ""))
             self.current_order = self.order_history[self.current_queue_number]
         else:
             self.current_queue_number += 1
@@ -76,8 +77,9 @@ class OrderHistory:
                     served = "T"
                 order_time = order.order_time
                 serving_time = order.serving_time
-                line = str(order.number) + " " + str(order.food) + " " + served + " " + order_time + " " + serving_time\
-                                                                                                            + '\n'
+                food_name = order.food_name
+                line = str(order.number) + " " + str(order.food) + " " + served + " " + food_name + " " + order_time + \
+                                                                                            " " + serving_time + '\n'
                 # for j in range(8):
                 #     line += " " + str(self.order_history[i][j])
                 l.write(line)
