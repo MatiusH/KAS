@@ -293,7 +293,7 @@ class GUI(OrderHistory):
     def submit_serving_gui(self):
         order_num = self.find_serving_number(self.new_serving)
         # If no servable order (should not happen)
-        if order_num == 0:
+        if order_num < 0:
             return
         self.popup(order_num)
         self.order_history[order_num].serving_time = time.strftime('%X')

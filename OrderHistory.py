@@ -117,7 +117,7 @@ class OrderHistory:
             if (order.food == food_num) & (order.served is False):
                 order.served = True
                 return order.number
-        return 0
+        return -1
 
     def count_current_orders(self):
         current_orders = [0, 0, 0, 0, 0, 0, 0, 0]
