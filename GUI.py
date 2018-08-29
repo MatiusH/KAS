@@ -270,7 +270,7 @@ class GUI(OrderHistory):
                 self.food_buttons[i].configure(state=NORMAL)
             # Disable current food button
             self.food_buttons[food_num - 1].configure(state=DISABLED)
-            
+
             self.new_serving = food_num
 
 
@@ -318,8 +318,10 @@ class GUI(OrderHistory):
         """
         Select the previous order
         """
+
         self.previous_order()
         self.update_logfile()
+
         self.label_queue_number.configure(text=str(self.return_queue_number()))
         self.label_ordered.configure(text=self.count_current_orders_str())
         self.update_order_history_field()
@@ -337,8 +339,10 @@ class GUI(OrderHistory):
         """
         Select the next order
         """
+
         self.next_order()
         self.update_logfile()
+
         self.label_queue_number.configure(text=str(self.return_queue_number()))
         self.label_ordered.configure(text=self.count_current_orders_str())
         self.bt.send_foods(self.count_current_orders())
@@ -352,10 +356,20 @@ class GUI(OrderHistory):
         if food_num > 0:
             self.food_buttons[food_num-1].configure(state=DISABLED)
 
+        #FIXME if this order has no food selected disable the next button in gui
+
 
     def update_order_history_field(self):
-        text = ""
+        """
+        Update the gui element showing the order order history
+        """
+
+        # Clear text field
+        self.order_history_field.delete(1.0, END)
+
+        # Update the order history in gui
         for order in self.order_history:
+            line = ""
             served = "F"
             if order.served:
                 served = "T"
@@ -364,14 +378,22 @@ class GUI(OrderHistory):
             serving_time = order.serving_time
             if serving_time == "":
                 serving_time = "        "
-            text += str(order.number) + "  " + str(order.food) + "  " + served + "  " + order_time + \
+
+            line += str(order.number) + "  " + str(order.food) + "  " + served + "  " + order_time + \
                     "  " + serving_time + "  " + food_name +'\n'
-        # Clear text field
-        self.order_history_field.delete(1.0, END)
-        # Insert text
-        self.order_history_field.insert(INSERT, text)
+
+            # Insert the line to gui. Use a red color on the current order line
+            # to emphasise it
+            if self.current_queue_number == order.number:
+                tag_name = "color-red"
+                self.order_history_field.tag_configure(tag_name, foreground="red")
+            else:
+                tag_name = "color-black"
+                self.order_history_field.tag_configure(tag_name, foreground="black")
+            self.order_history_field.insert(END, line, tag_name)
+
         # Remove first row
-        self.order_history_field.delete(1.0, 2.0)
+        self.order_history_field.delete(1.0, 2.0) #XXX Why is it removed removed?
         # Scroll to the end
         self.order_history_field.see(END)
 
