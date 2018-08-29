@@ -250,17 +250,27 @@ class GUI(OrderHistory):
         This method is called when a user presses a food button
         """
 
-        # Enable all buttons
-        for i in range(8):
-            self.food_buttons[i].configure(state=NORMAL)
-        # Disable current food button
-        self.food_buttons[food_num - 1].configure(state=DISABLED)
         if self.order_mode:
             # In order mode the selected food is stored as the food on that order
-            # FIXME served orders should be non mutable
-            self.order_history[self.return_queue_number()].food = food_num
-            self.order_history[self.return_queue_number()].food_name = self.food_names[food_num - 1]
+            order_num = self.return_queue_number()
+
+            # Only non served orders can be changed
+            if not self.order_history[order_num].served:
+                # Enable all buttons
+                for i in range(8):
+                    self.food_buttons[i].configure(state=NORMAL)
+                # Disable current food button
+                self.food_buttons[food_num - 1].configure(state=DISABLED)
+
+                self.order_history[order_num].food = food_num
+                self.order_history[order_num].food_name = self.food_names[food_num - 1]
         else:
+            # Enable all buttons
+            for i in range(8):
+                self.food_buttons[i].configure(state=NORMAL)
+            # Disable current food button
+            self.food_buttons[food_num - 1].configure(state=DISABLED)
+            
             self.new_serving = food_num
 
 
