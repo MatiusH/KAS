@@ -36,12 +36,15 @@ class OrderHistory:
                 self.order_history.append(Order(number, food_num, served, food_name, order_time, serving_time))
             l.close()
 
+        # If the log file is empty add an empty order to the order history
+        if not self.order_history:
+            self.order_history.append(Order(0, 0, False, "", time.strftime('%X'), ""))
+
         self.current_queue_number = self.order_history[-1].number
         self.current_order = self.order_history[-1]
         self.count_total_ordered()
         self.count_total_served()
         # print(self.order_history)
-
 
 
     def next_order(self):
@@ -57,7 +60,7 @@ class OrderHistory:
 
 
     def previous_order(self):
-        if self.current_queue_number > 1:
+        if self.current_queue_number > 0:
             self.current_queue_number -= 1
             self.current_order = self.order_history[self.current_queue_number]
         self.count_total_ordered()

@@ -408,7 +408,7 @@ class GUI(OrderHistory):
             self.order_history_field.insert(END, line, tag_name)
 
         # Remove first row
-        self.order_history_field.delete(1.0, 2.0) #XXX Why is it removed removed?
+        #self.order_history_field.delete(1.0, 2.0) #XXX Why is it removed removed?
         # Scroll to the end
         self.order_history_field.see(END)
 
