@@ -1,3 +1,4 @@
+# coding=utf-8
 # Read previous orders from logfile and save it's contents to a list of Orders.
 # First line contains the log of served foods
 
@@ -35,12 +36,15 @@ class OrderHistory:
                 self.order_history.append(Order(number, food_num, served, food_name, order_time, serving_time))
             l.close()
 
+        # If the log file is empty add an empty order to the order history
+        if not self.order_history:
+            self.order_history.append(Order(0, 0, False, "", time.strftime('%X'), ""))
+
         self.current_queue_number = self.order_history[-1].number
         self.current_order = self.order_history[-1]
         self.count_total_ordered()
         self.count_total_served()
         # print(self.order_history)
-
 
 
     def next_order(self):
@@ -56,9 +60,10 @@ class OrderHistory:
 
 
     def previous_order(self):
-        if self.current_queue_number > 1:
+        if self.current_queue_number > 0:
             self.current_queue_number -= 1
             self.current_order = self.order_history[self.current_queue_number]
+        self.count_total_ordered()
 
 
     def update_logfile(self):
@@ -112,8 +117,7 @@ class OrderHistory:
             if (order.food == food_num) & (order.served is False):
                 order.served = True
                 return order.number
-        return 0
-
+        return -1
 
     def count_current_orders(self):
         current_orders = [0, 0, 0, 0, 0, 0, 0, 0]
@@ -121,6 +125,12 @@ class OrderHistory:
             current_orders[i] = self.total_ordered[i] - int(self.total_served[i])
         return current_orders
 
+    def food_order_count(self, food_num):
+        """
+        Returns the number of awaiting orders for this food item
+        """
+        assert food_num >= 0 and food_num < 8
+        return self.total_ordered[food_num] - int(self.total_served[food_num])
 
     def count_current_orders_str(self):
         current_orders_str = ""

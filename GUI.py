@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from tkinter import *
 from OrderHistory import *
 from Bluetooth import *
@@ -43,10 +45,14 @@ class GUI(OrderHistory):
         self.order_history_field.configure(yscrollcommand=self.scrollbar.set)
 
         # Row 2
-        self.label_food_1_text = Label(self.main_window, text=self.food_names[0], width=15)
-        self.label_food_2_text = Label(self.main_window, text=self.food_names[1], width=15)
-        self.label_food_3_text = Label(self.main_window, text=self.food_names[2], width=15)
-        self.label_food_4_text = Label(self.main_window, text=self.food_names[3], width=15)
+        self.label_food_1_text = Label(self.main_window, text=self.food_names[0]
+            + ": " + str(self.food_order_count(0)), width=15)
+        self.label_food_2_text = Label(self.main_window, text=self.food_names[1]
+            + ": " + str(self.food_order_count(1)), width=15)
+        self.label_food_3_text = Label(self.main_window, text=self.food_names[2]
+            + ": " + str(self.food_order_count(2)), width=15)
+        self.label_food_4_text = Label(self.main_window, text=self.food_names[3]
+            + ": " + str(self.food_order_count(3)), width=15)
         self.label_food_1_text.grid(row=1, column=0)
         self.label_food_2_text.grid(row=1, column=1)
         self.label_food_3_text.grid(row=1, column=2)
@@ -112,10 +118,14 @@ class GUI(OrderHistory):
         self.label_spacer_2.grid(row=6, column=0)
 
         # Row 7
-        self.label_food_5_text = Label(self.main_window, text=self.food_names[4], width=15)
-        self.label_food_6_text = Label(self.main_window, text=self.food_names[5], width=15)
-        self.label_food_7_text = Label(self.main_window, text=self.food_names[6], width=15)
-        self.label_food_8_text = Label(self.main_window, text=self.food_names[7], width=15)
+        self.label_food_5_text = Label(self.main_window, text=self.food_names[4]
+            + ": " + str(self.food_order_count(4)), width=15)
+        self.label_food_6_text = Label(self.main_window, text=self.food_names[5]
+            + ": " + str(self.food_order_count(5)), width=15)
+        self.label_food_7_text = Label(self.main_window, text=self.food_names[6]
+            + ": " + str(self.food_order_count(6)), width=15)
+        self.label_food_8_text = Label(self.main_window, text=self.food_names[7]
+            + ": " + str(self.food_order_count(7)), width=15)
         self.label_food_5_text.grid(row=7, column=0)
         self.label_food_6_text.grid(row=7, column=1)
         self.label_food_7_text.grid(row=7, column=2)
@@ -185,13 +195,19 @@ class GUI(OrderHistory):
 
 
     def order(self):
+        """
+        Change program state to ordering foods
+        """
+
         self.button_order.configure(state=DISABLED, background="green")
         self.button_serve.configure(state=NORMAL, background="gray")
         self.toggle_mode()
-        self.label_queue_number_text.configure(text="Number:")
+        self.label_queue_number_text.configure(text="Vuoronumero:")
         self.label_queue_number.configure(text=str(self.return_queue_number()))
+
         for i in range(8):
             self.food_price_labels[i].configure(text=str(self.food_prices[i]) + "€")
+
         self.button_submit.configure(state=DISABLED)
         self.button_previous.configure(state=NORMAL)
         self.button_next.configure(state=NORMAL)
@@ -200,14 +216,22 @@ class GUI(OrderHistory):
 
 
     def serve(self):
+        """
+        Change program state to serving foods
+        """
+
         self.button_order.configure(state=NORMAL, background="grey")
         self.button_serve.configure(state=DISABLED, background="red")
+
         self.toggle_mode()
         self.new_serving = 0
+
         self.label_queue_number_text.configure(text="")
         self.label_queue_number.configure(text="")
+
         for label in self.food_price_labels:
             label.configure(text="")
+
         self.button_submit.configure(state=NORMAL)
         self.button_previous.configure(state=DISABLED)
         self.button_next.configure(state=DISABLED)
@@ -216,6 +240,11 @@ class GUI(OrderHistory):
 
 
     def toggle_mode(self):
+        """
+        Toggle the mode from/to order mode. Reset button states during the change
+        This method is called when a user changes the GUI view
+        """
+
         for button in self.food_buttons:
             button.configure(state=NORMAL)
         if self.order_mode:
@@ -225,15 +254,32 @@ class GUI(OrderHistory):
 
 
     def select_food(self, food_num):
-        # Enable all buttons
-        for i in range(8):
-            self.food_buttons[i].configure(state=NORMAL)
-        # Disable current food button
-        self.food_buttons[food_num - 1].configure(state=DISABLED)
+        """
+        Toggle all food buttons to active and then disable the one that was pressed
+        This method is called when a user presses a food button
+        """
+
         if self.order_mode:
-            self.order_history[self.return_queue_number()].food = food_num
-            self.order_history[self.return_queue_number()].food_name = self.food_names[food_num - 1]
+            # In order mode the selected food is stored as the food on that order
+            order_num = self.return_queue_number()
+
+            # Only non served orders can be changed
+            if not self.order_history[order_num].served:
+                # Enable all buttons
+                for i in range(8):
+                    self.food_buttons[i].configure(state=NORMAL)
+                # Disable current food button
+                self.food_buttons[food_num - 1].configure(state=DISABLED)
+
+                self.order_history[order_num].food = food_num
+                self.order_history[order_num].food_name = self.food_names[food_num - 1]
         else:
+            # Enable all buttons
+            for i in range(8):
+                self.food_buttons[i].configure(state=NORMAL)
+            # Disable current food button
+            self.food_buttons[food_num - 1].configure(state=DISABLED)
+
             self.new_serving = food_num
 
 
@@ -247,12 +293,14 @@ class GUI(OrderHistory):
     def submit_serving_gui(self):
         order_num = self.find_serving_number(self.new_serving)
         # If no servable order (should not happen)
-        if order_num == 0:
+        if order_num < 0:
             return
         self.popup(order_num)
         self.order_history[order_num].serving_time = time.strftime('%X')
         self.submit_new_serving(self.new_serving)
-        self.label_ordered.configure(text=self.count_current_orders_str())
+
+        self.update_awaiting_items()
+
         self.new_serving = 0
         self.update_order_history_field()
         for button in self.food_buttons:
@@ -262,45 +310,81 @@ class GUI(OrderHistory):
 
 
     def popup(self, order_num):
+        """
+        Displays a popup message showing the number of the order that was
+        served
+        """
+
         popup = Toplevel()
         popup.title("!")
+
         message = Message(popup, text=str(order_num), font=("", 30))
         message.pack()
+
         button = Button(popup, text="Ok", command=popup.destroy)
         button.pack()
 
 
     def previous(self):
+        """
+        Select the previous order
+        """
+
         self.previous_order()
         self.update_logfile()
-        self.label_queue_number.configure(text=str(self.return_queue_number()))
-        self.label_ordered.configure(text=self.count_current_orders_str())
-        self.update_order_history_field()
-        # Enable all buttons
-        for button in self.food_buttons:
-            button.configure(state=NORMAL)
-        self.food_buttons[self.order_history[self.return_queue_number()].food - 1].configure(state=DISABLED)
 
-
-    def next(self):
-        self.next_order()
-        self.update_logfile()
         self.label_queue_number.configure(text=str(self.return_queue_number()))
-        self.label_ordered.configure(text=self.count_current_orders_str())
-        self.bt.send_foods(self.count_current_orders())
+
+        self.update_awaiting_items()
+
         self.update_order_history_field()
+
         # Enable all buttons
         for button in self.food_buttons:
             button.configure(state=NORMAL)
         # Disable button of ordered food
         food_num = self.order_history[self.return_queue_number()].food
         if food_num > 0:
-            self.food_buttons[food_num].configure(state=DISABLED)
+            self.food_buttons[food_num-1].configure(state=DISABLED)
+
+
+    def next(self):
+        """
+        Select the next order
+        """
+
+        self.next_order()
+        self.update_logfile()
+
+        self.label_queue_number.configure(text=str(self.return_queue_number()))
+
+        self.update_awaiting_items()
+
+        self.bt.send_foods(self.count_current_orders())
+        self.update_order_history_field()
+
+        # Enable all buttons
+        for button in self.food_buttons:
+            button.configure(state=NORMAL)
+        # Disable button of ordered food
+        food_num = self.order_history[self.return_queue_number()].food
+        if food_num > 0:
+            self.food_buttons[food_num-1].configure(state=DISABLED)
+
+        #FIXME if this order has no food selected disable the next button in gui
 
 
     def update_order_history_field(self):
-        text = ""
+        """
+        Update the gui element showing the order order history
+        """
+
+        # Clear text field
+        self.order_history_field.delete(1.0, END)
+
+        # Update the order history in gui
         for order in self.order_history:
+            line = ""
             served = "F"
             if order.served:
                 served = "T"
@@ -309,17 +393,37 @@ class GUI(OrderHistory):
             serving_time = order.serving_time
             if serving_time == "":
                 serving_time = "        "
-            text += str(order.number) + "  " + str(order.food) + "  " + served + "  " + order_time + \
+
+            line += str(order.number) + "  " + str(order.food) + "  " + served + "  " + order_time + \
                     "  " + serving_time + "  " + food_name +'\n'
-        # Clear text field
-        self.order_history_field.delete(1.0, END)
-        # Insert text
-        self.order_history_field.insert(INSERT, text)
+
+            # Insert the line to gui. Use a red color on the current order line
+            # to emphasise it
+            if self.current_queue_number == order.number:
+                tag_name = "color-red"
+                self.order_history_field.tag_configure(tag_name, foreground="red")
+            else:
+                tag_name = "color-black"
+                self.order_history_field.tag_configure(tag_name, foreground="black")
+            self.order_history_field.insert(END, line, tag_name)
+
         # Remove first row
-        self.order_history_field.delete(1.0, 2.0)
+        #self.order_history_field.delete(1.0, 2.0) #XXX Why is it removed removed?
         # Scroll to the end
         self.order_history_field.see(END)
 
+    def update_awaiting_items(self):
+        """
+        Update gui for the number of items awaiting to be served
+        """
+
+        self.label_ordered.configure(text=self.count_current_orders_str())
+
+        food_index = 0
+        for label in self.food_text_entrys:
+            food_name = self.food_names[food_index]
+            label.configure(text=food_name + ": " + str(self.food_order_count(food_index)))
+            food_index += 1
 
     def exit(self):
         self.main_window.destroy()
