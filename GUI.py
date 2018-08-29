@@ -45,10 +45,14 @@ class GUI(OrderHistory):
         self.order_history_field.configure(yscrollcommand=self.scrollbar.set)
 
         # Row 2
-        self.label_food_1_text = Label(self.main_window, text=self.food_names[0], width=15)
-        self.label_food_2_text = Label(self.main_window, text=self.food_names[1], width=15)
-        self.label_food_3_text = Label(self.main_window, text=self.food_names[2], width=15)
-        self.label_food_4_text = Label(self.main_window, text=self.food_names[3], width=15)
+        self.label_food_1_text = Label(self.main_window, text=self.food_names[0]
+            + ": " + str(self.food_order_count(0)), width=15)
+        self.label_food_2_text = Label(self.main_window, text=self.food_names[1]
+            + ": " + str(self.food_order_count(1)), width=15)
+        self.label_food_3_text = Label(self.main_window, text=self.food_names[2]
+            + ": " + str(self.food_order_count(2)), width=15)
+        self.label_food_4_text = Label(self.main_window, text=self.food_names[3]
+            + ": " + str(self.food_order_count(3)), width=15)
         self.label_food_1_text.grid(row=1, column=0)
         self.label_food_2_text.grid(row=1, column=1)
         self.label_food_3_text.grid(row=1, column=2)
@@ -114,10 +118,14 @@ class GUI(OrderHistory):
         self.label_spacer_2.grid(row=6, column=0)
 
         # Row 7
-        self.label_food_5_text = Label(self.main_window, text=self.food_names[4], width=15)
-        self.label_food_6_text = Label(self.main_window, text=self.food_names[5], width=15)
-        self.label_food_7_text = Label(self.main_window, text=self.food_names[6], width=15)
-        self.label_food_8_text = Label(self.main_window, text=self.food_names[7], width=15)
+        self.label_food_5_text = Label(self.main_window, text=self.food_names[4]
+            + ": " + str(self.food_order_count(4)), width=15)
+        self.label_food_6_text = Label(self.main_window, text=self.food_names[5]
+            + ": " + str(self.food_order_count(5)), width=15)
+        self.label_food_7_text = Label(self.main_window, text=self.food_names[6]
+            + ": " + str(self.food_order_count(6)), width=15)
+        self.label_food_8_text = Label(self.main_window, text=self.food_names[7]
+            + ": " + str(self.food_order_count(7)), width=15)
         self.label_food_5_text.grid(row=7, column=0)
         self.label_food_6_text.grid(row=7, column=1)
         self.label_food_7_text.grid(row=7, column=2)
@@ -190,6 +198,7 @@ class GUI(OrderHistory):
         """
         Change program state to ordering foods
         """
+
         self.button_order.configure(state=DISABLED, background="green")
         self.button_serve.configure(state=NORMAL, background="gray")
         self.toggle_mode()
@@ -289,7 +298,9 @@ class GUI(OrderHistory):
         self.popup(order_num)
         self.order_history[order_num].serving_time = time.strftime('%X')
         self.submit_new_serving(self.new_serving)
-        self.label_ordered.configure(text=self.count_current_orders_str())
+
+        self.update_awaiting_items()
+
         self.new_serving = 0
         self.update_order_history_field()
         for button in self.food_buttons:
@@ -323,7 +334,9 @@ class GUI(OrderHistory):
         self.update_logfile()
 
         self.label_queue_number.configure(text=str(self.return_queue_number()))
-        self.label_ordered.configure(text=self.count_current_orders_str())
+
+        self.update_awaiting_items()
+
         self.update_order_history_field()
 
         # Enable all buttons
@@ -344,7 +357,9 @@ class GUI(OrderHistory):
         self.update_logfile()
 
         self.label_queue_number.configure(text=str(self.return_queue_number()))
-        self.label_ordered.configure(text=self.count_current_orders_str())
+
+        self.update_awaiting_items()
+
         self.bt.send_foods(self.count_current_orders())
         self.update_order_history_field()
 
@@ -397,6 +412,18 @@ class GUI(OrderHistory):
         # Scroll to the end
         self.order_history_field.see(END)
 
+    def update_awaiting_items(self):
+        """
+        Update gui for the number of items awaiting to be served
+        """
+
+        self.label_ordered.configure(text=self.count_current_orders_str())
+
+        food_index = 0
+        for label in self.food_text_entrys:
+            food_name = self.food_names[food_index]
+            label.configure(text=food_name + ": " + str(self.food_order_count(food_index)))
+            food_index += 1
 
     def exit(self):
         self.main_window.destroy()

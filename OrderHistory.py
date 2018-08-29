@@ -60,6 +60,7 @@ class OrderHistory:
         if self.current_queue_number > 1:
             self.current_queue_number -= 1
             self.current_order = self.order_history[self.current_queue_number]
+        self.count_total_ordered()
 
 
     def update_logfile(self):
@@ -115,13 +116,18 @@ class OrderHistory:
                 return order.number
         return 0
 
-
     def count_current_orders(self):
         current_orders = [0, 0, 0, 0, 0, 0, 0, 0]
         for i in range(8):
             current_orders[i] = self.total_ordered[i] - int(self.total_served[i])
         return current_orders
 
+    def food_order_count(self, food_num):
+        """
+        Returns the number of awaiting orders for this food item
+        """
+        assert food_num >= 0 and food_num < 8
+        return self.total_ordered[food_num] - int(self.total_served[food_num])
 
     def count_current_orders_str(self):
         current_orders_str = ""
