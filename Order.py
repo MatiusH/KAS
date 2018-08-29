@@ -1,5 +1,4 @@
-
-
+# coding=utf-8
 
 class Order:
     def __init__(self, number, food_num, served, food_name, o_time, s_time):

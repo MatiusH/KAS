@@ -1,3 +1,4 @@
+# coding=utf-8
 # Read previous orders from logfile and save it's contents to a list of Orders.
 # First line contains the log of served foods
 
