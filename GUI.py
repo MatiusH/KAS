@@ -9,9 +9,9 @@ class GUI(OrderHistory):
         self.bt = Bluetooth()
         self.main_window = Tk()
         self.order_mode = True
-        self.food_names = ["Lihis", "Ranut", "Makkaraperunat", "Sipulirenkaat", "Kinkkupizza", "Salamipizza",
+        self.food_names = ["Lihis", "Ranut", "Makkaraperunat", "Sipulirenkaat", "Kinkkupizza", "Pepperonipizza",
                            "Mozzarellapizza", "Mozzarellatikut"]
-        self.food_prices = [3.0, 2.0, 3.0, 2.0, 1.0, 1.0, 1.0, 5.0]
+        self.food_prices = [3.0, 3.0, 5.0, 2.0, 5.0, 5.0, 5.0, 2.0]
         self.new_serving = 0
 
         # Row 0
@@ -35,7 +35,7 @@ class GUI(OrderHistory):
         # Row 1
         self.label_spacer_1 = Label(self.main_window, text=" ")
         self.label_spacer_1.grid(row=1, column=0)
-        self.order_history_field = Text(height=30, width=45)
+        self.order_history_field = Text(height=30, width=52)
         self.scrollbar = Scrollbar()
         self.order_history_field.grid(row=1, column=10, rowspan=10, sticky=N + S)
         self.scrollbar.grid(row=1, column=11, rowspan=10, sticky=N + S)
@@ -263,7 +263,8 @@ class GUI(OrderHistory):
 
     def popup(self, order_num):
         popup = Toplevel()
-        popup.title("!")
+        popup.title("")
+        popup.geometry('200x130')
         message = Message(popup, text=str(order_num), font=("", 30))
         message.pack()
         button = Button(popup, text="Ok", command=popup.destroy)
